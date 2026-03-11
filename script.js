@@ -16,11 +16,14 @@ const fetalMilestones = {
     5: { phase: "Embrionik", title: "Minggu 5-8: Pembentukan Organ", desc: "Tabung saraf menutup. Jantung mulai berdetak dan otak berkembang pesat.", size: "2 - 5 mm (Biji Wijen)" },
     9: { phase: "Fetal", title: "Minggu 9-13: Wajah & Gerak", desc: "Janin mulai bergerak secara refleks. Organ vital mulai berfungsi.", size: "6 - 7 cm (Jeruk Nipis)" },
     14: { phase: "Fetal", title: "Minggu 14-27: Tendangan Aktif", desc: "Sistem saraf matang, janin aktif menendang, indra pendengaran aktif.", size: "25 - 35 cm (Terong)" },
-    28: { phase: "Fetal", title: "Minggu 28-40: Persiapan Lahir", desc: "Paru-paru matang, tulang mengeras, posisi kepala berputar ke bawah.", size: "45 - 50 sem (Semangka)" }
+    28: { phase: "Fetal", title: "Minggu 28-40: Persiapan Lahir", desc: "Paru-paru matang, tulang mengeras, posisi kepala berputar ke bawah.", size: "45 - 50 cm (Semangka)" }
 };
 
+// Variabel Penampung Progress
 let currentFolic = 0;
 let currentIron = 0;
+let targetIronHarian = 18; // Default Trimester 1
+const targetFolicHarian = 600; // Standar Tetap PMK 2019
 
 function init() {
     // 1. Populasi Select Minggu
@@ -43,17 +46,25 @@ function init() {
 }
 
 function updateFetalInfo() {
-    const week = document.getElementById('weekSelector').value;
+    const week = parseInt(document.getElementById('weekSelector').value);
     const m = fetalMilestones[week] || 
              (week < 5 ? fetalMilestones[1] : 
               week < 9 ? fetalMilestones[5] : 
               week < 14 ? fetalMilestones[9] : 
               week < 28 ? fetalMilestones[14] : fetalMilestones[28]);
 
+    // Update UI Milestone
     document.getElementById('fetalTitle').innerText = m.title;
     document.getElementById('fetalPhase').innerText = m.phase;
     document.getElementById('fetalDesc').innerText = m.desc;
     document.getElementById('fetalSize').innerText = "Estimasi: " + m.size;
+
+    // Logika Penyesuaian Target Zat Besi (PMK No. 28 Tahun 2019)
+    // Trimester 1 (Minggu 1-13) = 18mg, Trimester 2 & 3 (Minggu 14-40) = 27mg
+    targetIronHarian = (week >= 14) ? 27 : 18;
+    
+    // Refresh Tampilan Progress Bar agar skala-nya sesuai target baru
+    updateNutritionUI();
 }
 
 function addNutrition() {
@@ -63,15 +74,22 @@ function addNutrition() {
 
     const selectedFood = nutritionDatabase[foodIndex];
     
-    currentFolic = Math.min(currentFolic + selectedFood.folic, 600);
-    currentIron = Math.min(currentIron + selectedFood.iron, 27);
+    currentFolic = Math.min(currentFolic + selectedFood.folic, targetFolicHarian);
+    currentIron = Math.min(currentIron + selectedFood.iron, targetIronHarian);
 
-    // Update Infografis (Progress Bars)
-    document.getElementById('folicBar').style.width = (currentFolic/600 * 100) + "%";
-    document.getElementById('ironBar').style.width = (currentIron/27 * 100) + "%";
+    updateNutritionUI();
+}
+
+function updateNutritionUI() {
+    // Update Infografis (Progress Bars) berdasarkan target dinamis
+    const folicPercent = (currentFolic / targetFolicHarian) * 100;
+    const ironPercent = (currentIron / targetIronHarian) * 100;
+
+    document.getElementById('folicBar').style.width = folicPercent + "%";
+    document.getElementById('ironBar').style.width = ironPercent + "%";
     
-    document.getElementById('folicStatus').innerText = `${currentFolic} / 600 mcg`;
-    document.getElementById('ironStatus').innerText = `${currentIron} / 27 mg`;
+    document.getElementById('folicStatus').innerText = `${currentFolic} / ${targetFolicHarian} mcg`;
+    document.getElementById('ironStatus').innerText = `${currentIron} / ${targetIronHarian} mg`;
 }
 
 function checkRisk() {
@@ -82,6 +100,7 @@ function checkRisk() {
     if(isNaN(sys) || isNaN(glu)) return alert("Isi data tekanan darah dan gula darah ya, Bun.");
 
     let errors = [];
+    // Standar WHO & Kemenkes
     if(sys >= 140) errors.push("⚠️ Indikasi Hipertensi Gestasional (Sistolik ≥ 140 mmHg)");
     if(glu >= 200) errors.push("⚠️ Indikasi Diabetes Gestasional (GDS ≥ 200 mg/dL)");
 

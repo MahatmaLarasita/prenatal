@@ -37,23 +37,28 @@ const nutritionDatabase = [
 
 const fetalMilestones = {
     1: { phase: "Germinal", title: "Minggu 1-4: Implantasi", desc: "Sel mulai membelah diri menjadi embrio.", size: "0.1 mm" },
-    14: { phase: "Fetal", title: "Minggu 14-27: Gerak Aktif", desc: "Janin aktif menendang dan indra pendengaran mulai aktif.", size: "25 - 35 cm" },
-    28: { phase: "Fetal", title: "Minggu 28-40: Persiapan Lahir", desc: "Paru-paru matang dan posisi kepala mulai berputar ke bawah.", size: "45 - 50 cm" }
+    5: { phase: "Embrionik", title: "Minggu 5-8: Organogenesis", desc: "Tabung saraf menutup. Jantung mulai berdetak.", size: "2 - 5 mm" },
+    9: { phase: "Fetal", title: "Minggu 9-13: Pergerakan Refleks", desc: "Janin mulai bergerak dan organ vital mulai berfungsi.", size: "6 - 7 cm" },
+    14: { phase: "Fetal", title: "Minggu 14-27: Gerak Aktif", desc: "Sistem saraf matang, janin aktif menendang.", size: "25 - 35 cm" },
+    28: { phase: "Fetal", title: "Minggu 28-40: Persiapan Lahir", desc: "Paru-paru matang, posisi kepala berputar ke bawah.", size: "45 - 50 cm" }
 };
 
+// State Global
 let currentFolic = 0;
 let currentIron = 0;
-let targetIronHarian = 18; // Default Trimester 1
-const targetFolicHarian = 600; // Standar AKG per hari
+let targetIronHarian = 18; 
+const targetFolicHarian = 600;
 
 function init() {
+    // Populate Selector Minggu
     const weekSel = document.getElementById('weekSelector');
     for(let i=1; i<=40; i++) {
         weekSel.options[weekSel.options.length] = new Option("Minggu ke-" + i, i);
     }
 
+    // Populate Selector Makanan
     const foodSel = document.getElementById('foodSelect');
-    foodSel.innerHTML = '<option value="-1">-- Pilih Menu Makanan --</option>';
+    foodSel.innerHTML = '<option value="-1">-- Pilih Menu --</option>';
     nutritionDatabase.forEach((item, index) => {
         let option = document.createElement("option");
         option.value = index;
@@ -67,10 +72,16 @@ function init() {
 function updateFetalInfo() {
     const week = parseInt(document.getElementById('weekSelector').value);
     
-    // LOGIKA OTOMATIS: Target besi naik di Trimester 2 (Minggu 14+)
+    // Logika Target Zat Besi Otomatis (Trimester 1 vs Trimester 2/3)
     targetIronHarian = (week >= 14) ? 27 : 18;
 
-    const m = week >= 28 ? fetalMilestones[28] : (week >= 14 ? fetalMilestones[14] : fetalMilestones[1]);
+    // Cari Milestone terdekat
+    const m = week >= 28 ? fetalMilestones[28] : 
+             (week >= 14 ? fetalMilestones[14] : 
+             (week >= 9 ? fetalMilestones[9] : 
+             (week >= 5 ? fetalMilestones[5] : fetalMilestones[1])));
+
+    document.getElementById('fetalPhase').innerText = m.phase;
     document.getElementById('fetalTitle').innerText = m.title;
     document.getElementById('fetalDesc').innerText = m.desc;
     document.getElementById('fetalSize').innerText = "Estimasi Ukuran: " + m.size;
@@ -89,16 +100,25 @@ function addNutrition() {
     updateNutritionUI();
 }
 
+function resetNutrition() {
+    if(confirm("Mulai catatan untuk hari baru? Progres harian akan diulang dari nol.")) {
+        currentFolic = 0;
+        currentIron = 0;
+        updateNutritionUI();
+    }
+}
+
 function updateNutritionUI() {
     const folicPercent = Math.min((currentFolic / targetFolicHarian) * 100, 100);
     const ironPercent = Math.min((currentIron / targetIronHarian) * 100, 100);
 
+    // Animasi Progress Bar
     document.getElementById('folicBar').style.width = folicPercent + "%";
     document.getElementById('ironBar').style.width = ironPercent + "%";
     
-    // Penjelasan eksplisit agar tidak miskom: asupan vs target harian
-    document.getElementById('folicStatus').innerText = `${currentFolic} / ${targetFolicHarian} mcg (Target Harian)`;
-    document.getElementById('ironStatus').innerText = `${currentIron} / ${targetIronHarian} mg (Target Harian)`;
+    // Label Status
+    document.getElementById('folicStatus').innerText = `${currentFolic} / ${targetFolicHarian} mcg`;
+    document.getElementById('ironStatus').innerText = `${currentIron} / ${targetIronHarian} mg`;
 }
 
 function checkRisk() {
@@ -106,16 +126,16 @@ function checkRisk() {
     const glu = parseInt(document.getElementById('glucose').value);
     const res = document.getElementById('riskResult');
 
-    if(isNaN(sys) || isNaN(glu)) return alert("Isi data tekanan darah dan gula darah ya, Bun.");
+    if(isNaN(sys) || isNaN(glu)) return alert("Mohon lengkapi data screening.");
 
     let errors = [];
-    if(sys >= 140) errors.push("⚠️ Indikasi Hipertensi Gestasional (Sistolik ≥ 140 mmHg)");
-    if(glu >= 200) errors.push("⚠️ Indikasi Diabetes Gestasional (GDS ≥ 200 mg/dL)");
+    if(sys >= 140) errors.push("⚠️ Tekanan darah tinggi (Sistolik ≥ 140 mmHg)");
+    if(glu >= 200) errors.push("⚠️ Gula darah tinggi (GDS ≥ 200 mg/dL)");
 
     if(errors.length > 0) {
-        res.innerHTML = `<div class="alert alert-danger"><b>Peringatan:</b><br>${errors.join('<br>')}<br><br><small>Mohon segera konsultasikan ke dokter kandungan.</small></div>`;
+        res.innerHTML = `<div class="alert alert-danger"><b>Analisis Medis:</b><br>${errors.join('<br>')}<br><br><small>Mohon segera konsultasikan ke tenaga medis terdekat.</small></div>`;
     } else {
-        res.innerHTML = `<div class="alert alert-success">✅ Kondisi terpantau normal. Tetap jaga pola makan ya!</div>`;
+        res.innerHTML = `<div class="alert alert-success">✅ Kondisi saat ini terpantau normal. Tetap jaga kesehatan ya, Bun!</div>`;
     }
 }
 

@@ -1,14 +1,34 @@
-// Database Makanan (Simulasi JSON Database)
-// Sumber: TKPI Kemenkes & USDA Standard
+// Database Makanan (Data per 100 gram BDD atau Porsi Standar)
+// Sumber: Tabel Komposisi Pangan Indonesia (TKPI) & Referensi Klinis
 const nutritionDatabase = [
-    { name: "Susu Kehamilan (1 Gelas)", folic: 400, iron: 1, cal: 150 },
-    { name: "Bayam Masak (1 Mangkok)", folic: 194, iron: 3, cal: 40 },
-    { name: "Tablet Tambah Darah (1 Tab)", folic: 20, iron: 15, cal: 0 },
-    { name: "Hati Ayam (1 Potong)", folic: 150, iron: 2, cal: 116 },
-    { name: "Alpukat (1 Buah)", folic: 80, iron: 0.6, cal: 160 },
-    { name: "Telur Rebus (1 Butir)", folic: 22, iron: 1.2, cal: 78 },
-    { name: "Jeruk (1 Buah)", folic: 30, iron: 0.1, cal: 62 },
-    { name: "Kacang Hijau (1 Mangkok)", folic: 200, iron: 1.4, cal: 212 }
+    // Protein Hewani (Data per 100g)
+    { name: "Hati Ayam (100g)", folic: 588, iron: 9.0 },
+    { name: "Hati Sapi (100g)", folic: 250, iron: 8.0 },
+    { name: "Kerang (100g)", folic: 16, iron: 21.0 },
+    { name: "Daging Sapi (100g)", folic: 12, iron: 2.8 },
+    { name: "Kuning Telur Ayam (1 Btr)", folic: 146, iron: 2.7 },
+    { name: "Telur Ayam Utuh (1 Btr)", folic: 45, iron: 1.2 },
+    
+    // Ikan & Seafood (Data per 100g)
+    { name: "Ikan Bandeng (100g)", folic: 18, iron: 2.0 },
+    { name: "Ikan Mas (100g)", folic: 17, iron: 1.3 },
+    
+    // Sayuran & Kacang (Data per 100g)
+    { name: "Bayam Masak (100g)", folic: 170, iron: 3.1 },
+    { name: "Kacang Hijau (100g)", folic: 625, iron: 6.7 },
+    { name: "Kacang Merah (100g)", folic: 394, iron: 8.2 },
+    { name: "Kacang Kedelai Kering (100g)", folic: 375, iron: 15.7 },
+    { name: "Daun Kelor (100g)", folic: 40, iron: 7.0 },
+    { name: "Tempe (100g)", folic: 52, iron: 4.0 },
+    
+    // Buah (Data per 100g / Porsi)
+    { name: "Alpukat (100g)", folic: 81, iron: 0.6 },
+    { name: "Buah Bit (100g)", folic: 109, iron: 0.8 },
+    { name: "Jeruk (1 buah)", folic: 30, iron: 0.1 },
+    
+    // Suplemen & Susu
+    { name: "Tablet Tambah Darah (1 Tab)", folic: 400, iron: 60 },
+    { name: "Susu Bumil (1 Gelas)", folic: 400, iron: 1.0 }
 ];
 
 const fetalMilestones = {
@@ -22,8 +42,8 @@ const fetalMilestones = {
 // Variabel Penampung Progress
 let currentFolic = 0;
 let currentIron = 0;
-let targetIronHarian = 18; // Default Trimester 1
-const targetFolicHarian = 600; // Standar Tetap PMK 2019
+let targetIronHarian = 18; 
+const targetFolicHarian = 600; 
 
 function init() {
     // 1. Populasi Select Minggu
@@ -32,7 +52,7 @@ function init() {
         weekSel.options[weekSel.options.length] = new Option("Minggu ke-" + i, i);
     }
 
-    // 2. Populasi Select Makanan dari Database
+    // 2. Populasi Select Makanan
     const foodSel = document.getElementById('foodSelect');
     foodSel.innerHTML = '<option value="-1">-- Pilih Menu Makanan --</option>';
     nutritionDatabase.forEach((item, index) => {
@@ -53,43 +73,40 @@ function updateFetalInfo() {
               week < 14 ? fetalMilestones[9] : 
               week < 28 ? fetalMilestones[14] : fetalMilestones[28]);
 
-    // Update UI Milestone
     document.getElementById('fetalTitle').innerText = m.title;
     document.getElementById('fetalPhase').innerText = m.phase;
     document.getElementById('fetalDesc').innerText = m.desc;
     document.getElementById('fetalSize').innerText = "Estimasi: " + m.size;
 
-    // Logika Penyesuaian Target Zat Besi (PMK No. 28 Tahun 2019)
-    // Trimester 1 (Minggu 1-13) = 18mg, Trimester 2 & 3 (Minggu 14-40) = 27mg
+    // OTOMATIS: Target berubah saat masuk Minggu 14 (Trimester 2)
     targetIronHarian = (week >= 14) ? 27 : 18;
     
-    // Refresh Tampilan Progress Bar agar skala-nya sesuai target baru
     updateNutritionUI();
 }
 
 function addNutrition() {
     const foodIndex = document.getElementById('foodSelect').value;
-    
     if(foodIndex == -1) return alert("Pilih menu makanan dulu ya, Bun!");
 
     const selectedFood = nutritionDatabase[foodIndex];
     
-    currentFolic = Math.min(currentFolic + selectedFood.folic, targetFolicHarian);
-    currentIron = Math.min(currentIron + selectedFood.iron, targetIronHarian);
+    // Akumulasi tanpa melewati batas target (opsional, bisa dihapus jika ingin over-target)
+    currentFolic = Math.min(currentFolic + selectedFood.folic, 2000); // Batas aman atas (UL)
+    currentIron = Math.min(currentIron + selectedFood.iron, 45); // Batas aman atas (UL)
 
     updateNutritionUI();
 }
 
 function updateNutritionUI() {
-    // Update Infografis (Progress Bars) berdasarkan target dinamis
-    const folicPercent = (currentFolic / targetFolicHarian) * 100;
-    const ironPercent = (currentIron / targetIronHarian) * 100;
+    // Progress Bar menyesuaikan dengan targetIronHarian yang dinamis
+    const folicPercent = Math.min((currentFolic / targetFolicHarian) * 100, 100);
+    const ironPercent = Math.min((currentIron / targetIronHarian) * 100, 100);
 
     document.getElementById('folicBar').style.width = folicPercent + "%";
     document.getElementById('ironBar').style.width = ironPercent + "%";
     
-    document.getElementById('folicStatus').innerText = `${currentFolic} / ${targetFolicHarian} mcg`;
-    document.getElementById('ironStatus').innerText = `${currentIron} / ${targetIronHarian} mg`;
+    document.getElementById('folicStatus').innerText = `${currentFolic} / ${targetFolicHarian} mcg (Harian)`;
+    document.getElementById('ironStatus').innerText = `${currentIron} / ${targetIronHarian} mg (Harian)`;
 }
 
 function checkRisk() {
@@ -100,7 +117,6 @@ function checkRisk() {
     if(isNaN(sys) || isNaN(glu)) return alert("Isi data tekanan darah dan gula darah ya, Bun.");
 
     let errors = [];
-    // Standar WHO & Kemenkes
     if(sys >= 140) errors.push("⚠️ Indikasi Hipertensi Gestasional (Sistolik ≥ 140 mmHg)");
     if(glu >= 200) errors.push("⚠️ Indikasi Diabetes Gestasional (GDS ≥ 200 mg/dL)");
 

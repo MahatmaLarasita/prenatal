@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <link rel="stylesheet" href="prenatal.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -18,83 +18,74 @@
         <p>Your Intelligent Prenatal Companion</p>
     </header>
 
-    <div class="grid-main">
+    <div class="grid-layout">
         <section class="card">
-            <div class="card-header">
-                <i class="fas fa-baby"></i>
-                <span>Kalender Janin (Milestone WHO)</span>
-            </div>
+            <div class="card-header"><i class="fas fa-baby"></i> Milestone Janin (WHO)</div>
             <div class="card-body">
-                <label>Pilih Minggu Kehamilan:</label>
-                <select id="weekSelector" class="custom-select" onchange="updateFetalInfo()"></select>
+                <label>Minggu Kehamilan:</label>
+                <select id="weekSelector" class="custom-input" onchange="updateFetalInfo()"></select>
                 
-                <div id="fetalDisplay" class="info-box">
-                    <div class="info-header">
-                        <h3 id="fetalTitle">Minggu 1</h3>
-                        <span id="fetalPhase" class="badge-phase">Germinal</span>
+                <div id="fetalDisplay" class="milestone-box">
+                    <div class="badge-row">
+                        <span id="fetalPhase" class="badge blue">Fase</span>
                     </div>
-                    <p id="fetalDesc">Memasuki masa pembuahan. Sel mulai membelah diri.</p>
-                    <div class="info-footer">
-                        <span id="fetalSize" class="badge-size"><i class="fas fa-ruler"></i> Ukuran: 0.1 mm</span>
+                    <h3 id="fetalTitle">Pilih Minggu</h3>
+                    <p id="fetalDesc">Informasi perkembangan akan muncul di sini.</p>
+                    <div class="size-tag">
+                        <i class="fas fa-ruler-combined"></i> <span id="fetalSize">Estimasi Ukuran</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="card">
-            <div class="card-header">
-                <i class="fas fa-apple-alt"></i>
-                <span>Nutrisi Harian</span>
-            </div>
+            <div class="card-header"><i class="fas fa-apple-alt"></i> Kalkulator Nutrisi Gizi</div>
             <div class="card-body">
-                <div class="nutrition-tracker">
-                    <div class="stat">
-                        <small>Asam Folat (WHO: 600mcg)</small>
-                        <div class="progress-bar"><div id="folicBar" class="fill folic"></div></div>
-                        <span id="folicStatus">0 / 600 mcg</span>
-                    </div>
-                    <div class="stat">
-                        <small>Zat Besi (WHO: 27mg)</small>
-                        <div class="progress-bar"><div id="ironBar" class="fill iron"></div></div>
-                        <span id="ironStatus">0 / 27 mg</span>
-                    </div>
+                <div class="stat-row">
+                    <div class="stat-label">Asam Folat (Target: 600mcg)</div>
+                    <div class="progress-bg"><div id="folicBar" class="progress-fill pink"></div></div>
+                    <small id="folicStatus">0 / 600 mcg</small>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Zat Besi (Target: 27mg)</div>
+                    <div class="progress-bg"><div id="ironBar" class="progress-fill blue"></div></div>
+                    <small id="ironStatus">0 / 27 mg</small>
                 </div>
                 
-                <div class="food-selector">
-                    <label>Tambah Makanan:</label>
-                    <select id="foodSelect" class="custom-select">
+                <div class="action-area">
+                    <label>Catat Makanan:</label>
+                    <select id="foodSelect" class="custom-input">
                         <option value="0,0">-- Pilih Menu --</option>
-                        <option value="400,1">Susu Hamil (1 Gelas)</option>
+                        <option value="400,1">Susu Kehamilan (1 Gelas)</option>
                         <option value="194,3">Bayam Masak (1 Mangkok)</option>
-                        <option value="20,15">Tablet TTD (1 Tablet)</option>
+                        <option value="20,15">Tablet Tambah Darah (1 Tab)</option>
                         <option value="150,2">Hati Ayam (1 Potong)</option>
                     </select>
-                    <button class="btn btn-pink" onclick="addNutrition()">Simpan Konsumsi</button>
+                    <button class="btn btn-pink" onclick="addNutrition()">Tambah Konsumsi</button>
                 </div>
             </div>
         </section>
     </div>
 
     <section class="card full-width">
-        <div class="card-header">
-            <i class="fas fa-heartbeat"></i>
-            <span>Screening Risiko (Klinis WHO)</span>
-        </div>
-        <div class="card-body grid-inputs">
-            <div class="input-group">
-                <label>Sistolik (mmHg)</label>
-                <input type="number" id="systolic" placeholder="Contoh: 120">
+        <div class="card-header"><i class="fas fa-heartbeat"></i> Screening Risiko Klinis (Hipertensi & Diabetes)</div>
+        <div class="card-body">
+            <div class="input-grid">
+                <div class="input-field">
+                    <label>Sistolik (mmHg)</label>
+                    <input type="number" id="systolic" placeholder="Contoh: 120">
+                </div>
+                <div class="input-field">
+                    <label>Gula Darah Sewaktu (mg/dL)</label>
+                    <input type="number" id="glucose" placeholder="Contoh: 100">
+                </div>
+                <button class="btn btn-dark" onclick="checkRisk()">Cek Kondisi Sekarang</button>
             </div>
-            <div class="input-group">
-                <label>Gula Darah (mg/dL)</label>
-                <input type="number" id="glucose" placeholder="Contoh: 100">
-            </div>
-            <button class="btn btn-blue" onclick="checkRisk()">Analisis Data Medis</button>
+            <div id="riskResult"></div>
         </div>
-        <div id="riskResult"></div>
     </section>
 </div>
 
-<script src="prenatal.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,96 +1,79 @@
 :root {
-    --bg-color: #fffafb;
-    --card-bg: #ffffff;
-    --pink-primary: #ffafcc;
-    --blue-accent: #bde0fe;
-    --text-dark: #5c5c5c;
-    --text-muted: #8e8e8e;
-    --success: #a2d2ff;
-    --danger: #ffc8dd;
+    --pink-light: #ffafcc;
+    --pink-dark: #fb6f92;
+    --blue-soft: #bde0fe;
+    --bg-soft: #fffcfd;
+    --text: #4a4a4a;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-dark);
+    background: linear-gradient(135deg, var(--bg-soft) 0%, #f1e4e9 100%);
+    color: var(--text);
     margin: 0; padding: 20px;
 }
 
-.container { max-width: 1000px; margin: 0 auto; }
+.container { max-width: 950px; margin: 0 auto; }
 
-header { text-align: center; margin-bottom: 40px; }
-header h1 { color: var(--pink-primary); margin: 0; }
-.logo { font-size: 2rem; font-weight: 600; color: var(--pink-primary); }
+header { text-align: center; margin-bottom: 30px; }
+.logo { font-size: 2.5rem; font-weight: 600; color: var(--pink-dark); }
 
-.grid-main {
+.grid-layout {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
-    gap: 25px;
-    margin-bottom: 25px;
+    gap: 20px; margin-bottom: 20px;
 }
 
 .card {
-    background: var(--card-bg);
-    border-radius: 24px;
+    background: white;
+    border-radius: 25px;
     padding: 25px;
-    box-shadow: 0 10px 30px rgba(255, 175, 204, 0.1);
-    border: 1px solid #fdf0f5;
+    box-shadow: 0 10px 30px rgba(251, 111, 146, 0.1);
 }
 
 .card-header {
-    display: flex; align-items: center;
-    gap: 12px; font-weight: 600; font-size: 1.1rem;
-    color: var(--text-dark); margin-bottom: 20px;
+    font-weight: 600; font-size: 1.1rem; color: var(--pink-dark);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
 }
 
-.card-header i { color: var(--pink-primary); }
-
-/* Fetal Info Box */
-.info-box {
-    background: linear-gradient(to bottom right, #ffffff, #fff5f8);
-    border: 2px solid var(--pink-primary);
+.milestone-box {
+    background: #fffafa;
+    border: 2px dashed var(--pink-light);
     border-radius: 20px; padding: 20px; text-align: center;
 }
 
-.badge-phase {
-    background: var(--blue-accent); color: white;
-    padding: 4px 12px; border-radius: 50px; font-size: 0.75rem;
+.badge {
+    padding: 5px 15px; border-radius: 50px; color: white; font-size: 0.8rem;
 }
+.blue { background: var(--blue-soft); color: #555; }
 
 /* Progress Bars */
-.progress-bar {
-    background: #f0f0f0; border-radius: 50px; height: 10px;
-    overflow: hidden; margin: 8px 0;
-}
-.fill { height: 100%; width: 0%; transition: width 0.6s ease-in-out; }
-.folic { background: var(--pink-primary); }
-.iron { background: var(--blue-accent); }
+.progress-bg { background: #eee; border-radius: 10px; height: 12px; margin: 8px 0; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; transition: width 0.5s ease; }
+.pink { background: var(--pink-light); }
+.blue { background: var(--blue-soft); }
 
-/* Form Elements */
-.custom-select, input {
+/* Inputs & Buttons */
+.custom-input, input {
     width: 100%; padding: 12px; border: 1.5px solid #eee;
-    border-radius: 12px; margin-bottom: 15px; outline: none;
+    border-radius: 12px; margin-bottom: 15px; outline: none; box-sizing: border-box;
 }
 
 .btn {
     border: none; padding: 14px; border-radius: 12px;
     width: 100%; cursor: pointer; font-weight: 600; transition: 0.3s;
 }
-.btn-pink { background: var(--pink-primary); color: white; }
-.btn-blue { background: var(--blue-accent); color: white; }
+.btn-pink { background: var(--pink-dark); color: white; }
+.btn-dark { background: #4a4a4a; color: white; }
 
-/* Screening Grid */
-.grid-inputs {
-    display: grid; grid-template-columns: 1fr 1fr auto;
-    gap: 20px; align-items: end;
+.input-grid {
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: end;
 }
 
-.alert {
-    margin-top: 20px; padding: 15px; border-radius: 12px;
-}
-.alert-warning { background: #fff0f3; color: #d63384; border-left: 6px solid #ffafcc; }
-.alert-safe { background: #f0f9ff; color: #0c63e4; border-left: 6px solid #bde0fe; }
+.alert { margin-top: 20px; padding: 15px; border-radius: 15px; }
+.alert-danger { background: #ffe5ec; color: #d00000; border-left: 5px solid #fb6f92; }
+.alert-success { background: #e8f5e9; color: #2e7d32; border-left: 5px solid #4caf50; }
 
-@media (max-width: 850px) {
-    .grid-main, .grid-inputs { grid-template-columns: 1fr; }
+@media (max-width: 800px) {
+    .grid-layout, .input-grid { grid-template-columns: 1fr; }
 }

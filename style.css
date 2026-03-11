@@ -1,112 +1,96 @@
 :root {
-    --primary-pink: #ffafcc;
-    --dark-text: #4a4a4a;
-    --bg-gradient: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    --bg-color: #fffafb;
+    --card-bg: #ffffff;
+    --pink-primary: #ffafcc;
+    --blue-accent: #bde0fe;
+    --text-dark: #5c5c5c;
+    --text-muted: #8e8e8e;
+    --success: #a2d2ff;
+    --danger: #ffc8dd;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: var(--bg-gradient);
-    color: var(--dark-text);
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    margin: 0; padding: 20px;
 }
 
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-}
+.container { max-width: 1000px; margin: 0 auto; }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
+header { text-align: center; margin-bottom: 40px; }
+header h1 { color: var(--pink-primary); margin: 0; }
+.logo { font-size: 2rem; font-weight: 600; color: var(--pink-primary); }
 
-.card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+.grid-main {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 25px;
     margin-bottom: 25px;
 }
 
-.card-title {
-    font-weight: 600;
-    color: #9c6644;
-    margin-bottom: 15px;
+.card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(255, 175, 204, 0.1);
+    border: 1px solid #fdf0f5;
 }
 
-#fetalDisplay {
-    background: #fffafa;
-    border: 2px dashed var(--primary-pink);
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 15px;
-    text-align: center;
+.card-header {
+    display: flex; align-items: center;
+    gap: 12px; font-weight: 600; font-size: 1.1rem;
+    color: var(--text-dark); margin-bottom: 20px;
 }
 
-.badge-size {
-    background: var(--primary-pink);
-    color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
+.card-header i { color: var(--pink-primary); }
+
+/* Fetal Info Box */
+.info-box {
+    background: linear-gradient(to bottom right, #ffffff, #fff5f8);
+    border: 2px solid var(--pink-primary);
+    border-radius: 20px; padding: 20px; text-align: center;
+}
+
+.badge-phase {
+    background: var(--blue-accent); color: white;
+    padding: 4px 12px; border-radius: 50px; font-size: 0.75rem;
 }
 
 /* Progress Bars */
-.progress-bg {
-    background: #eee;
-    border-radius: 10px;
-    height: 12px;
-    overflow: hidden;
-    margin-top: 5px;
+.progress-bar {
+    background: #f0f0f0; border-radius: 50px; height: 10px;
+    overflow: hidden; margin: 8px 0;
+}
+.fill { height: 100%; width: 0%; transition: width 0.6s ease-in-out; }
+.folic { background: var(--pink-primary); }
+.iron { background: var(--blue-accent); }
+
+/* Form Elements */
+.custom-select, input {
+    width: 100%; padding: 12px; border: 1.5px solid #eee;
+    border-radius: 12px; margin-bottom: 15px; outline: none;
 }
 
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    transition: width 0.5s ease;
+.btn {
+    border: none; padding: 14px; border-radius: 12px;
+    width: 100%; cursor: pointer; font-weight: 600; transition: 0.3s;
 }
+.btn-pink { background: var(--pink-primary); color: white; }
+.btn-blue { background: var(--blue-accent); color: white; }
 
-.bg-folic { background: #ffc8dd; }
-.bg-iron { background: #cdb4db; }
-
-/* Layouting */
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
+/* Screening Grid */
 .grid-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 20px; align-items: end;
 }
-
-button {
-    background: #d4a373;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 100%;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.btn-risk { background: #9c6644; }
 
 .alert {
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 15px;
+    margin-top: 20px; padding: 15px; border-radius: 12px;
 }
+.alert-warning { background: #fff0f3; color: #d63384; border-left: 6px solid #ffafcc; }
+.alert-safe { background: #f0f9ff; color: #0c63e4; border-left: 6px solid #bde0fe; }
 
-.alert-safe { background: #e8f5e9; color: #2e7d32; }
-.alert-danger { background: #ffebee; color: #c62828; }
-
-@media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr; }
+@media (max-width: 850px) {
+    .grid-main, .grid-inputs { grid-template-columns: 1fr; }
 }

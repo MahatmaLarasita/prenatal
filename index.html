@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrowLife - Prenatal Intelligence</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +20,7 @@
         <section class="card">
             <div class="card-header"><i class="fas fa-baby"></i> Milestone Janin (WHO)</div>
             <div class="card-body">
-                <label>Minggu Kehamilan:</label>
+                <label>Pilih Minggu Kehamilan:</label>
                 <select id="weekSelector" class="custom-input" onchange="updateFetalInfo()"></select>
                 
                 <div id="fetalDisplay" class="milestone-box">
@@ -39,36 +37,40 @@
         </section>
 
         <section class="card">
-            <div class="card-header"><i class="fas fa-apple-alt"></i> Kalkulator Nutrisi Gizi</div>
+            <div class="card-header"><i class="fas fa-apple-alt"></i> Kalkulator Nutrisi Harian</div>
             <div class="card-body">
+                <p class="daily-note">*Target ini adalah total kebutuhan dalam 24 jam.</p>
+                
                 <div class="stat-row">
-                    <div class="stat-label">Asam Folat (Target: 600mcg)</div>
-                    <div class="progress-bg"><div id="folicBar" class="progress-fill pink"></div></div>
-                    <small id="folicStatus">0 / 600 mcg</small>
+                    <div class="stat-label">Asam Folat</div>
+                    <div class="progress-bg"><div id="folicBar" class="progress-fill folic-color"></div></div>
+                    <div class="status-container">
+                        <small id="folicStatus">0 / 600 mcg</small>
+                        <small class="daily-tag">Target Harian</small>
+                    </div>
                 </div>
+
                 <div class="stat-row">
-                    <div class="stat-label">Zat Besi (Target: 27mg)</div>
-                    <div class="progress-bg"><div id="ironBar" class="progress-fill blue"></div></div>
-                    <small id="ironStatus">0 / 27 mg</small>
+                    <div class="stat-label">Zat Besi</div>
+                    <div class="progress-bg"><div id="ironBar" class="progress-fill iron-color"></div></div>
+                    <div class="status-container">
+                        <small id="ironStatus">0 / 18 mg</small>
+                        <small class="daily-tag">Target Harian</small>
+                    </div>
                 </div>
                 
                 <div class="action-area">
-                    <label>Catat Makanan:</label>
-                    <select id="foodSelect" class="custom-input">
-                        <option value="0,0">-- Pilih Menu --</option>
-                        <option value="400,1">Susu Kehamilan (1 Gelas)</option>
-                        <option value="194,3">Bayam Masak (1 Mangkok)</option>
-                        <option value="20,15">Tablet Tambah Darah (1 Tab)</option>
-                        <option value="150,2">Hati Ayam (1 Potong)</option>
-                    </select>
+                    <label>Catat Makanan (per 100g/porsi):</label>
+                    <select id="foodSelect" class="custom-input"></select>
                     <button class="btn btn-pink" onclick="addNutrition()">Tambah Konsumsi</button>
+                    <button class="btn btn-outline" onclick="resetNutrition()" style="margin-top: 10px;">Reset Hari Baru</button>
                 </div>
             </div>
         </section>
     </div>
 
     <section class="card full-width">
-        <div class="card-header"><i class="fas fa-heartbeat"></i> Screening Risiko Klinis (Hipertensi & Diabetes)</div>
+        <div class="card-header"><i class="fas fa-heartbeat"></i> Screening Risiko Klinis</div>
         <div class="card-body">
             <div class="input-grid">
                 <div class="input-field">
@@ -79,7 +81,7 @@
                     <label>Gula Darah Sewaktu (mg/dL)</label>
                     <input type="number" id="glucose" placeholder="Contoh: 100">
                 </div>
-                <button class="btn btn-dark" onclick="checkRisk()">Cek Kondisi Sekarang</button>
+                <button class="btn btn-dark" onclick="checkRisk()">Analisis Medis</button>
             </div>
             <div id="riskResult"></div>
         </div>

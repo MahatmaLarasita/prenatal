@@ -1,0 +1,112 @@
+:root {
+    --primary-pink: #ffafcc;
+    --dark-text: #4a4a4a;
+    --bg-gradient: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--dark-text);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #9c6644;
+    margin-bottom: 15px;
+}
+
+#fetalDisplay {
+    background: #fffafa;
+    border: 2px dashed var(--primary-pink);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.badge-size {
+    background: var(--primary-pink);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* Progress Bars */
+.progress-bg {
+    background: #eee;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.bg-folic { background: #ffc8dd; }
+.bg-iron { background: #cdb4db; }
+
+/* Layouting */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.grid-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+button {
+    background: #d4a373;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn-risk { background: #9c6644; }
+
+.alert {
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+
+.alert-safe { background: #e8f5e9; color: #2e7d32; }
+.alert-danger { background: #ffebee; color: #c62828; }
+
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+}

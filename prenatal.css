@@ -1,0 +1,17 @@
+#fetalDisplay {
+    background: #f8f9fc;
+    border-radius: 15px;
+    border: 1px dashed #1cc88a;
+}
+
+.text-success {
+    color: #2e7d32 !important;
+}
+
+.bg-success {
+    background-color: #2e7d32 !important;
+}
+
+#riskResult .alert {
+    border-left: 5px solid;
+}

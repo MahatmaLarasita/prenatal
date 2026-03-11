@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Prenatal Intelligence</h1>
+
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-success">
+                    <h6 class="m-0 font-weight-bold text-white">Kalender Perkembangan Janin (Mingguan)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Pilih Minggu Kehamilan:</label>
+                        <select class="form-control" id="weekSelector" onchange="updateFetalInfo()">
+                            </select>
+                    </div>
+                    <div id="fetalDisplay" class="text-center p-3">
+                        <h4 id="fetalTitle" class="text-success">Minggu 1</h4>
+                        <p id="fetalDesc">Deskripsi perkembangan akan muncul di sini.</p>
+                        <div class="badge badge-info p-2" id="fetalSize">Ukuran: Sebesar biji wijen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Kalkulator Nutrisi Harian</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label>Asam Folat (mcg)</label>
+                        <div class="progress mb-2">
+                            <div id="folicBar" class="progress-bar bg-info" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <small id="folicStatus">0 / 600 mcg</small>
+                    </div>
+                    <div class="mb-3">
+                        <label>Zat Besi (mg)</label>
+                        <div class="progress mb-2">
+                            <div id="ironBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <small id="ironStatus">0 / 27 mg</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary btn-block" onclick="addNutrition()">Tambah Konsumsi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-danger">Screening Risiko (Hipertensi & Diabetes)</h6>
+                </div>
+                <div class="card-body">
+                    <form id="riskForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Tekanan Darah Sistolik (mmHg)</label>
+                                <input type="number" id="systolic" class="form-control mb-2" placeholder="Contoh: 120">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Gula Darah Sewaktu (mg/dL)</label>
+                                <input type="number" id="glucose" class="form-control mb-2" placeholder="Contoh: 100">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger mt-3" onclick="checkRisk()">Cek Risiko</button>
+                    </form>
+                    <div id="riskResult" class="mt-3 d-none">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
